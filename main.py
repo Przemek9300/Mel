@@ -1,20 +1,20 @@
+from keras.models import load_model
 import pandas as pd
 import os
 import shutil
-from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
- 
+
 import matplotlib.pyplot as plt
-from keras.applications.mobilenet_v2 import MobileNetV2
-from keras.models import Model
-from keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 
 
 img_width, img_height = 224, 224
-train_samples = 32000
+train_samples = 3200
 batch_size = 10
 train_data_dir = './ready'
-from keras.models import load_model
 
 
 # imports the mobilenet model and discards the last 1000 neuron layer.
@@ -35,8 +35,9 @@ model = Model(inputs=base_model.input, outputs=preds)
 
 for layer in model.layers[:-23]:
     layer.trainable = False
-model = load_model('m.hdf5', compile=False)
-model.compile(optimizer='Adam',  loss='categorical_crossentropy', metrics=['accuracy'])
+# model = load_model('m.hdf5', compile=False)
+model.compile(optimizer='Adam',  loss='categorical_crossentropy',
+              metrics=['accuracy'])
 model.summary()
 
 train_datagen = ImageDataGenerator(rescale=1./255,
@@ -64,8 +65,10 @@ history = model.fit_generator(
     steps_per_epoch=train_generator.samples // batch_size,
     validation_data=validation_generator,
     validation_steps=validation_generator.samples // batch_size,
-    epochs=2)
+    epochs=1)
 model.save('m.hdf5')
+model_json = model.to_json()
+
 
 # # Plot training & validation accuracy values
 # plt.plot(history.history[z'acc'])

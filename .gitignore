@@ -5,3 +5,7 @@ vscode
 test
 train
 val
+./model
+*.json
+*.hdf5
+*.bin
