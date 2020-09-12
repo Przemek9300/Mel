@@ -47,20 +47,20 @@ train_datagen = ImageDataGenerator(rescale=1./255,
                                    validation_split=0.3)  # set validation split
 
 train_generator = train_datagen.flow_from_directory(
-    'train',
+    'data',
     target_size=(img_height, img_width),
     batch_size=batch_size,
     class_mode='categorical',
     subset='training')  # set as training data
 
 validation_generator = train_datagen.flow_from_directory(
-    'val',  # same directory as training data
+    'data',  # same directory as training data
     target_size=(img_height, img_width),
     batch_size=batch_size,
     class_mode='categorical',
     subset='validation')  # set as validation data
 
-history = model.fit_generator(
+history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.samples // batch_size,
     validation_data=validation_generator,
@@ -70,20 +70,20 @@ model.save('m.hdf5')
 model_json = model.to_json()
 
 
-# # Plot training & validation accuracy values
-# plt.plot(history.history[z'acc'])
-# plt.plot(history.history['val_acc'])
-# plt.title('Model accuracy')
-# plt.ylabel('Accuracy')
-# plt.xlabel('Epoch')
-# plt.legend(['Train', 'Test'], loc='upper left')
-# plt.show()
+# Plot training & validation accuracy values
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
 
-# # Plot training & validation loss values
-# plt.plot(history.history['loss'])
-# plt.plot(history.history['val_loss'])
-# plt.title('Model loss')
-# plt.ylabel('Loss')
-# plt.xlabel('Epoch')
-# plt.legend(['Train', 'Test'], loc='upper left')
-# plt.show()
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()

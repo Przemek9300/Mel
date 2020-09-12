@@ -9,3 +9,5 @@ val
 *.json
 *.hdf5
 *.bin
+*.jpg
+*.7z
